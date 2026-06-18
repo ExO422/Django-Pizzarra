@@ -1,0 +1,35 @@
+{% load static %}
+{# Le avisa a Django que usaremos la carpeta 'static' para cargar el archivo CSS #}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de Tarea Completada</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+
+    <h1>🔍 Consulta de Historial</h1>
+
+    {# Contenedor estático diseñado exclusivamente para la presentación fija de los datos #}
+    <div class="detalle-caja">
+        <h2>✅ {{ tarea.titulo }}</h2>
+        
+        {# Validación interna: si la descripción quedó vacía se muestra un aviso en cursiva #}
+        <p>{% if tarea.contenido %}{{ tarea.contenido }}{% else %}<em>Sin descripción registrada.</em>{% endif %}</p>
+        
+        {# Bloque informativo fijo para metadatos del sistema #}
+        <div class="info-bloque">
+            <p><strong>Estado del registro:</strong> Finalizado (Bloqueado - Solo lectura)</p>
+            <p><strong>Fecha de alta original:</strong> {{ tarea.creado_el|date:"d \d\e F, Y - H:i" }}</p>
+        </div>
+
+        {# Enlace para regresar de forma segura a la lista simple del historial #}
+        <div style="margin-top: 30px; text-align: center;">
+            <a href="{% url 'historial_completadas' %}" class="enlace-nav">← Volver al Historial</a>
+        </div>
+    </div>
+
+</body>
+</html>

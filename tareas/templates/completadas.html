@@ -1,0 +1,38 @@
+{% load static %}
+{# Le avisa a Django que usaremos la carpeta 'static' para cargar el archivo CSS #}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Tareas Completadas</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+
+    <h1>✅ Historial de Trabajos Completados</h1>
+
+    {# Enlace para retornar a la mesa de trabajo principal #}
+    <div class="navegacion">
+        <a href="{% url 'pizarra' %}" class="enlace-nav">📌 Regresar a la Pizarra</a>
+    </div>
+
+    {# Despliegue de la lista simple estructurada (sin diseño de Post-it) #}
+    <ul class="lista-completadas">
+        {% for nota in postits %}
+            <li class="item-completado">
+                {# Al pulsar el renglón, viaja a la pantalla de detalle pasándole el ID de la nota #}
+                <a href="{% url 'detalle_completada' nota.id %}">
+                    📄 <strong>{{ nota.titulo }}</strong> 
+                    <span style="float: right; font-size: 13px; color: #888;">Ver detalles estáticos →</span>
+                </a>
+            </li>
+        {% empty %}
+            <p style="text-align: center; color: #aaa; margin-top: 30px;">
+                Aún no has completado ninguna tarea de la pizarra.
+            </p>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

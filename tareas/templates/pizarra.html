@@ -1,0 +1,90 @@
+{% load static %}
+{# Le avisa a Django que usaremos la carpeta 'static' para cargar el archivo CSS #}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pizarra de Tareas Pendientes</title>
+    
+    {# Enlazamos el archivo CSS externo usando la etiqueta estática de Django #}
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+
+    <h1>📌 Pizarra de Trabajos Pendientes</h1>
+    
+    {# Enlace superior para navegar hacia la vista de historial (Lista simple) #}
+    <div class="navegacion">
+        <a href="{% url 'historial_completadas' %}" class="enlace-nav">📋 Ver Lista de Completadas</a>
+    </div>
+
+    {# Formulario para registrar nuevas tareas en la pizarra #}
+    <div class="formulario-contenedor">
+        <form method="POST">
+            {# Token obligatorio de Django para proteger el formulario contra ataques CSRF #}
+            {% csrf_token %}
+            
+            <div class="campo-grupo">
+                <label for="titulo">Tarea / Título:</label>
+                <input type="text" id="titulo" name="titulo" required placeholder="Ej: Estudiar POO">
+            </div>
+            
+            <div class="campo-grupo">
+                <label for="contenido">Descripción:</label>
+                <textarea id="contenido" name="contenido" rows="4" placeholder="Detalles de la tarea..."></textarea>
+            </div>
+            
+            <div class="campo-grupo">
+                <label for="color">Color del Post-it:</label>
+                <select id="color" name="color">
+                    <option value="#fff740">Amarillo</option>
+                    <option value="#ff7eb9">Rosa</option>
+                    <option value="#7afcff">Azul</option>
+                    <option value="#98ff98">Verde</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn-guardar">Pegar en la Pizarra</button>
+        </form>
+    </div>
+
+    {# Área de la cuadrícula donde se acomodan los Post-its activos #}
+    <div class="pizarra-contenedor">
+        {% for nota in postits %}
+            {# Se transfiere el color HEX del modelo a la variable personalizada de CSS #}
+            <div class="post-it" style="--bg-color: {{ nota.color }};">
+                <div>
+                    <h3>{{ nota.titulo }}</h3>
+                    <p>{{ nota.contenido }}</p>
+                </div>
+                
+                <div>
+                    {# Contenedor flexbox para alinear la fila de botones inferiores #}
+                    <div class="post-it-acciones">
+                        {# Enlace dinámico que apunta a la vista de edición enviando el ID #}
+                        <a href="{% url 'editar_tarea' nota.id %}" class="btn-editar" title="Editar esta tarea">✏️ Modificar</a>
+                        
+                        {# Enlace dinámico que activa el cambio de estado a completada #}
+                        <a href="{% url 'completar_tarea' nota.id %}" class="btn-completar" title="Marcar como terminada">✓ Listo</a>
+                        
+                        {# NUEVO BOTÓN: Enlace dinámico para eliminar de la base de datos con confirmación integrada #}
+                        <a href="{% url 'eliminar_tarea' nota.id %}" 
+                           class="btn-eliminar" 
+                           title="Eliminar permanentemente"
+                           onclick="return confirm('¿Seguro que deseas eliminar este Post-it de la pizarra?');">
+                           🗑️ Borrar
+                        </a>
+                    </div>
+                    <div class="fecha">Asignado: {{ nota.creado_el|date:"d M" }}</div>
+                </div>
+            </div>
+        {% empty %}
+            <p style="text-align: center; grid-column: 1 / -1; color: #aaa;">
+                🎉 ¡No hay trabajos pendientes en la pizarra! Todo está al día.
+            </p>
+        {% endfor %}
+    </div>
+
+</body>
+</html>
