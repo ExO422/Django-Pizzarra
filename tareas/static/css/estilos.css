@@ -2,8 +2,8 @@
    CONFIGURACIÓN GENERAL DE LA PIZARRA
    ========================================== */
 body {
-    background-color: #2b2b2b; /* Fondo oscuro que simula una pizarra de salón */
-    color: #ffffff;            /* Texto general en blanco para alto contraste */
+    background-color: #2b2b2b;
+    color: #ffffff;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 20px;
@@ -11,158 +11,137 @@ body {
 
 h1 {
     text-align: center;
-    color: #f1c40f;            /* Color amarillo brillante para resaltar el título */
-}
-
-/* Enlaces de navegación superiores entre pantallas */
-.navegacion {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.enlace-nav {
     color: #f1c40f;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 16px;
-    border: 1px solid #f1c40f;
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-}
-
-.enlace-nav:hover {
-    background-color: #f1c40f;
-    color: #2b2b2b;
 }
 
 /* ==========================================
-   CONTENEDOR DEL FORMULARIO (AÑADIR NOTAS)
+   BARRA DE NAVEGACIÓN Y USUARIO
    ========================================== */
-.formulario-contenedor {
-    background-color: #333333; /* Un gris un poco más claro que el fondo general */
-    max-width: 500px;          /* Limita el ancho del formulario para que no se estire demasiado */
-    margin: 0 auto 30px auto;  /* Centra el formulario horizontalmente y deja margen abajo */
-    padding: 20px;
-    border-radius: 8px;        /* Bordes redondeados */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Sombra suave para dar efecto de profundidad */
+.navegacion-usuario {
+    background-color: #333;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 2px solid #f1c40f;
+    margin-bottom: 20px;
 }
 
-/* Espaciado entre cada campo (label + input) */
+.navegacion-usuario span {
+    margin-right: 15px;
+}
+
+.btn-logout {
+    background-color: #e74c3c;
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.btn-logout:hover {
+    background-color: #c0392b;
+}
+
+/* ==========================================
+   FORMULARIOS
+   ========================================== */
+.formulario-contenedor {
+    background-color: #333333;
+    max-width: 500px;
+    margin: 0 auto 30px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
 .campo-grupo {
     margin-bottom: 15px;
 }
 
 .campo-grupo label {
-    display: block;            /* Hace que el texto del label se coloque arriba del campo */
+    display: block;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
-/* Estilo unificado para cajas de texto, áreas de texto y selectores */
 .campo-grupo input[type="text"],
+.campo-grupo input[type="password"],
 .campo-grupo textarea,
 .campo-grupo select {
-    width: 100%;               /* Ocupa todo el ancho disponible del contenedor */
+    width: 100%;
     padding: 8px;
     border-radius: 4px;
-    border: 1px solid #555;    /* Borde gris sutil */
-    background-color: #444;    /* Fondo oscuro para los campos */
-    color: #fff;               /* Texto blanco al escribir */
-    box-sizing: border-box;    /* Asegura que el padding no rompa el ancho del 100% */
+    border: 1px solid #555;
+    background-color: #444 !important;
+    color: #fff !important;
+    box-sizing: border-box;
 }
 
-/* Botón para enviar el formulario */
+/* Forzado para anular estilos del navegador (autocompletado) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+    border: 1px solid #555 !important;
+    -webkit-text-fill-color: #fff !important;
+    -webkit-box-shadow: 0 0 0px 1000px #444 inset !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 .btn-guardar {
-    background-color: #27ae60; /* Color verde para denotar una acción positiva (crear) */
+    background-color: #27ae60;
     color: white;
     border: none;
     padding: 10px 15px;
     width: 100%;
     border-radius: 4px;
-    cursor: pointer;           /* Cambia el cursor a una mano al pasar por encima */
+    cursor: pointer;
     font-size: 16px;
 }
 
-/* Efecto visual cuando el usuario pasa el mouse sobre el botón */
 .btn-guardar:hover {
-    background-color: #219150; /* Un verde un poco más oscuro */
+    background-color: #219150;
 }
 
 /* ==========================================
-   CUADRÍCULA (GRID) DE LOS POST-ITS
+   CUADRÍCULA DE POST-ITS
    ========================================== */
 .pizarra-contenedor {
-    display: grid;             /* Activa el modo de diseño en cuadrícula */
-    /* Crea columnas automáticas adaptables. Cada una medirá mínimo 250px y máximo 1 fracción del espacio */
+    display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;                 /* Separación de 20px entre los Post-its */
+    gap: 20px;
     padding: 20px;
 }
 
-/* ==========================================
-   ESTILO INDIVIDUAL DE CADA POST-IT PENDIENTE
-   ========================================== */
 .post-it {
-    /* Toma la variable '--bg-color' enviada por Django en el HTML. Si falla, usa amarillo por defecto */
-    background-color: var(--bg-color, #fff740); 
-    color: #333333;            /* Texto oscuro para que resalte sobre los colores pastel */
+    background-color: var(--bg-color, #fff740);
+    color: #333333;
     padding: 20px;
-    min-height: 220px;         /* Aumentamos ligeramente la altura mínima para acomodar el tercer botón */
+    min-height: 220px;
     border-radius: 4px;
-    box-shadow: 5px 5px 10px rgba(0,0,0,0.5); /* Sombra fuerte abajo y a la derecha para efecto flotante */
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
     position: relative;
-    display: flex;             /* Usamos Flexbox internamente para ordenar el contenido del Post-it */
-    flex-direction: column;    /* Los elementos de la nota se alinean verticalmente */
-    justify-content: space-between; /* Empuja las acciones y la fecha al fondo del Post-it */
-    transform: rotate(-1deg);  /* Inclinación inicial leve hacia la izquierda */
-    transition: transform 0.2s ease; /* Suaviza la animación del hover */
-}
-
-/* Rotación alterna (Post-its pares) para simular el desorden de una pizarra real */
-.post-it:nth-child(even) {
-    transform: rotate(2deg);   /* Inclinación hacia la derecha */
-}
-
-/* Animación cuando el usuario pasa el mouse sobre un Post-it */
-.post-it:hover {
-    transform: scale(1.05) rotate(0deg); /* Se agranda un 5% y se endereza por completo */
-    z-index: 10;               /* Se coloca por encima de las demás notas vecinas */
-}
-
-/* Título interno de la nota */
-.post-it h3 {
-    margin-top: 0;
-    border-bottom: 1px solid rgba(0,0,0,0.1); /* Línea divisoria muy tenue */
-    padding-bottom: 5px;
-}
-
-/* Cuerpo o descripción de la nota */
-.post-it p {
-    flex-grow: 1;              /* Hace que el texto ocupe todo el espacio central libre */
-    white-space: pre-wrap;     /* Mantiene los saltos de línea y espacios que el usuario escribió */
-}
-
-/* Fecha ubicada en la esquina inferior derecha */
-.post-it .fecha {
-    font-size: 11px;
-    color: #666;
-    text-align: right;
-    margin-top: 5px;
-}
-
-/* Agrupador para alinear los botones inferiores del Post-it de forma flexible */
-.post-it-acciones {
     display: flex;
-    justify-content: space-between; /* Distribuye el espacio de forma uniforme entre los botones */
-    align-items: center;
-    margin-bottom: 5px;
+    flex-direction: column;
+    justify-content: space-between;
+    transform: rotate(-1deg);
+    transition: transform 0.2s ease;
 }
 
-/* Botón para modificar el Post-it pendiente */
-.btn-editar {
+.post-it:nth-child(even) { transform: rotate(2deg); }
+.post-it:hover { transform: scale(1.05) rotate(0deg); z-index: 10; }
+
+.post-it h3 { margin-top: 0; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 5px; }
+.post-it p { flex-grow: 1; white-space: pre-wrap; }
+.post-it .fecha { font-size: 11px; color: #666; text-align: right; margin-top: 5px; }
+
+.post-it-acciones { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+
+.btn-editar, .btn-completar, .btn-eliminar {
     display: inline-block;
-    background-color: #3498db; /* Color azul para denotar edición */
     color: white;
     text-decoration: none;
     text-align: center;
@@ -173,110 +152,24 @@ h1 {
     transition: background 0.2s;
 }
 
-.btn-editar:hover {
-    background-color: #2980b9; /* Azul más oscuro al pasar el mouse */
-}
+.btn-editar { background-color: #3498db; }
+.btn-editar:hover { background-color: #2980b9; }
 
-/* Botón "Completar" dentro de cada Post-it */
-.btn-completar {
-    display: inline-block;
-    background-color: #e67e22; /* Color naranja llamativo */
-    color: white;
-    text-decoration: none;
-    text-align: center;
-    padding: 6px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: bold;
-    transition: background 0.2s;
-}
+.btn-completar { background-color: #e67e22; }
+.btn-completar:hover { background-color: #d35400; }
 
-.btn-completar:hover {
-    background-color: #d35400; /* Naranja más oscuro */
-}
-
-/* NUEVO ESTILO: Botón "Eliminar" para tareas pendientes */
-.btn-eliminar {
-    display: inline-block;
-    background-color: #e74c3c; /* Rojo carmín para denotar destrucción/borrado */
-    color: white;
-    text-decoration: none;
-    text-align: center;
-    padding: 6px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: bold;
-    transition: background 0.2s;
-}
-
-.btn-eliminar:hover {
-    background-color: #c0392b; /* Rojo más oscuro */
-}
+.btn-eliminar { background-color: #e74c3c; }
+.btn-eliminar:hover { background-color: #c0392b; }
 
 /* ==========================================
-   HISTORIAL DE COMPLETADAS (LISTA SIMPLE)
+   HISTORIAL Y DETALLES
    ========================================== */
+.lista-completadas { max-width: 600px; margin: 20px auto; padding: 0; list-style: none; }
+.item-completado { background-color: #333333; margin-bottom: 10px; border-left: 5px solid #27ae60; border-radius: 4px; transition: background 0.2s; }
+.item-completado a { display: block; padding: 15px; color: #ffffff; text-decoration: none; font-size: 16px; }
+.item-completado:hover { background-color: #444444; }
 
-/* Contenedor de la lista simple (quita viñetas y centra el bloque) */
-.lista-completadas {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 0;
-    list-style: none;
-}
-
-/* Cada fila o renglón de la lista de tareas terminadas */
-.item-completado {
-    background-color: #333333;
-    margin-bottom: 10px;
-    border-left: 5px solid #27ae60; /* Franja verde lateral que indica "completado" */
-    border-radius: 4px;
-    transition: background 0.2s;
-}
-
-/* Enlace interno de la fila para que todo el renglón sea clickeable */
-.item-completado a {
-    display: block;
-    padding: 15px;
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 16px;
-}
-
-.item-completado:hover {
-    background-color: #444444; /* Brillo ligero al pasar el mouse */
-}
-
-/* ==========================================
-   PANTALLA DE SOLO CONSULTA (DETALLE FIJO)
-   ========================================== */
-
-/* Caja estática para visualizar los detalles sin edición */
-.detalle-caja {
-    background-color: #333333;
-    max-width: 600px;
-    margin: 30px auto;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-.detalle-caja h2 {
-    color: #27ae60;
-    border-bottom: 1px solid #555;
-    padding-bottom: 10px;
-    margin-top: 0;
-}
-
-.detalle-caja p {
-    white-space: pre-wrap;
-    line-height: 1.6;
-    color: #ddd;
-}
-
-/* Bloque gris de texto al fondo para metadatos fijos */
-.info-bloque {
-    margin-top: 20px;
-    font-size: 13px;
-    color: #888;
-}
+.detalle-caja { background-color: #333333; max-width: 600px; margin: 30px auto; padding: 25px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.detalle-caja h2 { color: #27ae60; border-bottom: 1px solid #555; padding-bottom: 10px; margin-top: 0; }
+.detalle-caja p { white-space: pre-wrap; line-height: 1.6; color: #ddd; }
+.info-bloque { margin-top: 20px; font-size: 13px; color: #888; }
