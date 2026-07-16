@@ -10,7 +10,7 @@ def vista_logout(request):
     return redirect('login')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin-ucenm/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     # Ahora usamos la función que definimos arriba
     path('logout/', vista_logout, name='logout'),

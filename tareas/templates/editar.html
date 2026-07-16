@@ -1,6 +1,4 @@
 {% load static %}
-{# Le avisa a Django que usaremos la carpeta 'static' para cargar el archivo CSS #}
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,26 +11,34 @@
     <h1>✏️ Modificar Post-it</h1>
 
     <div class="formulario-contenedor">
-        {# El formulario utiliza el método POST para enviar las modificaciones de vuelta al servidor #}
         <form method="POST">
             {% csrf_token %}
             
             <div class="campo-grupo">
                 <label for="titulo">Tarea / Título:</label>
-                {# El atributo value pre-carga el título existente para poder editarlo #}
                 <input type="text" id="titulo" name="titulo" required value="{{ tarea.titulo }}">
+            </div>
+
+            {# NUEVO SELECTOR PARA REASIGNAR #}
+            <div class="campo-grupo">
+                <label for="usuario_asignado">Reasignar a:</label>
+                <select id="usuario_asignado" name="usuario_asignado">
+                    {% for u in usuarios %}
+                        <option value="{{ u.id }}" {% if u.id == tarea.asignado_a.id %}selected{% endif %}>
+                            {{ u.username }}
+                        </option>
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="campo-grupo">
                 <label for="contenido">Descripción:</label>
-                {# El texto de la descripción se inyecta directamente dentro de la etiqueta textarea #}
                 <textarea id="contenido" name="contenido" rows="4">{{ tarea.contenido }}</textarea>
             </div>
 
             <div class="campo-grupo">
                 <label for="color">Color del Post-it:</label>
                 <select id="color" name="color">
-                    {# Bloques condicionales 'if' de Django evalúan el color actual para dejarlo seleccionado por defecto #}
                     <option value="#fff740" {% if tarea.color == "#fff740" %}selected{% endif %}>Amarillo</option>
                     <option value="#ff7eb9" {% if tarea.color == "#ff7eb9" %}selected{% endif %}>Rosa</option>
                     <option value="#7afcff" {% if tarea.color == "#7afcff" %}selected{% endif %}>Azul</option>
@@ -41,8 +47,6 @@
             </div>
 
             <button type="submit" class="btn-guardar">Guardar Cambios</button>
-            
-            {# Enlace de cancelación por si el usuario decide no modificar nada #}
             <a href="{% url 'pizarra' %}" style="display: block; text-align: center; margin-top: 15px; color: #aaa; text-decoration: none;">Cancelar</a>
         </form>
     </div>

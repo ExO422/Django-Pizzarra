@@ -10,16 +10,15 @@
 
     {# RECUADRO DE NAVEGACIÓN Y USUARIO #}
     <div class="navegacion-usuario" style="background-color: #333; padding: 15px; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 30px;">
-        
         <span class="btn-editar" style="cursor: default; background-color: #555;">Hola, {{ user.username }}</span>
-        
         <a href="{% url 'historial_completadas' %}" class="btn-editar">📋 Historial</a>
         <a href="{% url 'logout' %}" class="btn-editar">Cerrar Sesión</a>
     </div>
 
-    <h1>📌 Pizarra de Trabajos Pendientes</h1>
+    <h1>Pizarra de Trabajos Pendientes</h1>
     
-    {# FORMULARIO DE NUEVA TAREA #}
+    {# FORMULARIO DE NUEVA TAREA (SOLO ADMIN) #}
+    {% if user.is_superuser %}
     <div class="formulario-contenedor">
         <form method="POST">
             {% csrf_token %}
@@ -27,6 +26,17 @@
             <div class="campo-grupo">
                 <label for="titulo">Tarea / Título:</label>
                 <input type="text" id="titulo" name="titulo" required placeholder="Ej: Estudiar POO">
+            </div>
+
+            {# NUEVO SELECTOR PARA ASIGNAR USUARIO #}
+            <div class="campo-grupo">
+                <label for="usuario_asignado">Asignar a:</label>
+                <select name="usuario_asignado" id="usuario_asignado" required>
+                    <option value="">-- Seleccione un alumno --</option>
+                    {% for u in usuarios %}
+                        <option value="{{ u.id }}">{{ u.username }}</option>
+                    {% endfor %}
+                </select>
             </div>
             
             <div class="campo-grupo">
@@ -47,6 +57,7 @@
             <button type="submit" class="btn-guardar">Pegar en la Pizarra</button>
         </form>
     </div>
+    {% endif %}
 
     {# CUADRÍCULA DE POST-ITS #}
     <div class="pizarra-contenedor">
@@ -55,13 +66,17 @@
                 <div>
                     <h3>{{ nota.titulo }}</h3>
                     <p>{{ nota.contenido }}</p>
+                    {# Indicador de responsable #}
+                    <p><small><strong>Para:</strong> {{ nota.asignado_a.username }}</small></p>
                 </div>
                 
                 <div>
                     <div class="post-it-acciones">
-                        <a href="{% url 'editar_tarea' nota.id %}" class="btn-editar">✏️ Modificar</a>
+                        {% if user.is_superuser %}
+                            <a href="{% url 'editar_tarea' nota.id %}" class="btn-editar">✏️ Modificar</a>
+                            <a href="{% url 'eliminar_tarea' nota.id %}" class="btn-eliminar" onclick="return confirm('¿Seguro que deseas eliminar este Post-it?');">🗑️ Borrar</a>
+                        {% endif %}
                         <a href="{% url 'completar_tarea' nota.id %}" class="btn-completar">✓ Listo</a>
-                        <a href="{% url 'eliminar_tarea' nota.id %}" class="btn-eliminar" onclick="return confirm('¿Seguro que deseas eliminar este Post-it?');">🗑️ Borrar</a>
                     </div>
                     <div class="fecha">Asignado: {{ nota.creado_el|date:"d M" }}</div>
                 </div>
